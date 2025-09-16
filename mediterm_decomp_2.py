@@ -1,5 +1,5 @@
 
-voca_dict = {'chrom':'유전','some':'체','lith':'돌(결석)','protein':'단백질','hist':'근육','logist':'학자','adip':'지방','cyt':'세포','plasm':'질(조직,물질)','cyte':'세포(구)','erythr':'붉은','karyo':'핵','type':'형','end':'안쪽','leuk':'흰','granul':'과립','cerebell':'소뇌','cerebr':'대뇌(뇌)','dur':'경막','encephal':'뇌','gil':'신경아교세포','mening':'수막','my':'근육','pathy':'병증','neur':'신경','myel':'척수','hypo':'아래쪽','thalamus':'시상','emia':'혈병(피의 비정상적 상태)'}
+voca_dict = {'hemat':'피(혈)','oma':'종양'}
 
 while True:
     
@@ -10,30 +10,48 @@ while True:
     else:
         dajin = list(mediterm)
         brk = False
-        oa = []
+        oa = False
 
         while True:                         # 리스트에서 잘못 찾았을 경우 대비
             if brk:
                 break
             else:
                 result = []
-                comb_str = dajin[0]
-                for i in range(len(dajin)):
-                    print(i)
-                    print(comb_str)
-                    if comb_str in voca_dict:
-                        result.append(comb_str)
-                        # comb_str 초기화
-                        if i == len(dajin)-1:
-                            brk = True                # 단어 끝: 마무리
+                if oa:
+                    comb_str = dajin[len(dajin)-1]
+                    for i in range(len(dajin)):
+                        print(comb_str)
+                        if comb_str in voca_dict:
+                            result.insert(0, comb_str)
+                            # comb_str 초기화
+                            if i == len(dajin)-1:
+                                brk = True                # 단어 끝: 마무리
+                            else:
+                                comb_str = dajin[len(dajin)-i-2]
                         else:
-                            comb_str = dajin[i+1]
-                    else:
-                        if i == len(dajin)-1:
-                            print("ERROR!!!")
-                            oa.append(result)
+                            if i == len(dajin)-1:
+                                print("\n\nERROR! Program Terminated.")
+                                exit()
+                            else:
+                                comb_str = dajin[len(dajin)-i-2]+comb_str
+
+                else:
+                    comb_str = dajin[0]
+                    for i in range(len(dajin)):
+                        print(comb_str)
+                        if comb_str in voca_dict:
+                            result.append(comb_str)
+                            # comb_str 초기화
+                            if i == len(dajin)-1:
+                                brk = True                # 단어 끝: 마무리
+                            else:
+                                comb_str = dajin[i+1]
                         else:
-                            comb_str = comb_str+dajin[i+1]
+                            if i == len(dajin)-1:
+                                print("Wrong Initializing - Decomposing Again...")
+                                oa = True
+                            else:
+                                comb_str = comb_str+dajin[i+1]
 
 
         # 결과 출력
